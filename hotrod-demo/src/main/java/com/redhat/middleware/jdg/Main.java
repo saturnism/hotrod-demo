@@ -35,12 +35,12 @@ public class Main {
 	/**
 	 * Initial hotrod server list
 	 */
-	private static final String INITIAL_LIST = "127.0.0.2";
+	private static final String INITIAL_LIST = "127.0.0.1";
 	
 	/**
 	 * Name of the cache to use for demo
 	 */
-	private static final String CACHE_NAME = "namedCache";
+	private static final String CACHE_NAME = "___defaultcache";
 
 	/**
 	 * @param args

@@ -47,6 +47,9 @@ All configurations are in code (sorry), located in `com.redhat.middleware.jdg.Ma
 ### INITIAL_LIST
 Set the `INITIAL_LIST` to at least one HotRod server.  See HotRod Client documentation equivalent of: http://docs.jboss.org/infinispan/5.1/apidocs/org/infinispan/client/hotrod/RemoteCacheManager.html#RemoteCacheManager(java.lang.String,%20boolean)
 
+### CACHE_NAME
+Set the `CACHE_NAME` to the name of the cache you want to use.  By default, JDG comes w/ "namedCache" configuration.  For Infinispan, try "___defaultcache".
+
 ### Demos to Run
 If you don't want to run something, comment it out.  For `TwitterDemoClient`, you'll need to pass in a `Consumer Key` and a `Consumer Secret`.  If you don't have one, go to https://dev.twitter.com/apps and create a new application.
 
