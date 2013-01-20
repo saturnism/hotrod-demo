@@ -21,48 +21,59 @@ Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 02110-1301 USA, or see the FSF site: http://www.fsf.org.
 --->
 
-jdg-visualizer
+hotrod-demo
 ========================
 
 What is it?
 -----------
 
-This is a set of demo code that populates noticeable amount of data into Infinispan/JDG.  This can be used along w/ the Visualizer application to see data grid in action.  The Visualizer application can be found: https://github.com/infinispan/visual
+This is a set of demo code that populates noticeable amount of data into Infinispan/JDG.  
+This can be used along w/ the Visualizer application to see data grid in action.  
+The Visualizer application can be found: <https://github.com/infinispan/visual/>
 
-System requirements
--------------------
+# 1. Running the Data Grid Loader
+
+## 1.1 System requirements
  * JBoss Data Grid 6.0 or Infinispan
  * Maven 2
 
-Configure Maven
----------------
+## 1.2 Running the Pre-built Demo
+Execute main class `com.redhat.middleware.jdg.Main`
+
+	java -cp $CLASSPATH com.redhat.middleware.jdg.Main -Djdg.demo.initialList=192.168.1.115:11223 -Djdg.demo.cacheName=labCache -Djdg.demo.maxEntries=1000 -Djdg.demo.clearOnFinish=false -Djdg.demo.putDelay=5 -Djdg.demo.useTwitter=false
+
+* **-Djdg.demo.initialList** must be set to at least one data grid node's hotrod interface. See HotRod Client documentation equivalent of: <http://docs.jboss.org/infinispan/5.1/apidocs/org/infinispan/client/hotrod/RemoteCacheManager.html#RemoteCacheManager(java.lang.String,%20boolean)/>
+* **-Djdg.demo.cacheName** must be set to the name of the cache to load the data into. All nodes in the cluster must have this cache.
+* **-Djdg.demo.maxEntries** is the count of data entries to load
+* **-Djdg.demo.clearOnFinish** is set to `true` or `false` to evict all the cached entries one by one after all the data has been loaded.
+* **-Djdg.demo.putDelay** is the amount of time in milliseconds to wait between puts to the cache.
+* **-Djdg.demo.useTwitter**:`false` to use the basic CounterDemo. `true` to load the grid with Twitter entries. **-Djdg.demo.consumerKey** and **-Djdg.demo.consumerSecret** must be set to your twitter api credentials. If you don't have credentials, go to <https://dev.twitter.com/apps and create a new application/>.
+
+# 2. Building
+
+## 2.1 Configure Maven
 If not using Infinispan, everything should be good to go.
 
-If you are using JDG 6, please make sure JDG 6 repository is configured based on JDG 6 Maven Repository installation instructions.  Please change the `pom.xml` so that the Infinispan dependency is based on JDG 6 repository.
+If you are using JDG 6, please make sure JDG 6 repository is configured based on JDG 6 Maven 
+Repository installation instructions.  Please change the `pom.xml` so that the Infinispan 
+dependency is based on JDG 6 repository.
 
-Configure the Demo
-------------------------
-All configurations are in code (sorry), located in `com.redhat.middleware.jdg.Main`.
-
-### INITIAL_LIST
-Set the `INITIAL_LIST` to at least one HotRod server.  See HotRod Client documentation equivalent of: http://docs.jboss.org/infinispan/5.1/apidocs/org/infinispan/client/hotrod/RemoteCacheManager.html#RemoteCacheManager(java.lang.String,%20boolean)
-
-### CACHE_NAME
-Set the `CACHE_NAME` to the name of the cache you want to use.  By default, JDG comes w/ "namedCache" configuration.  For Infinispan, try "___defaultcache".
-
-### Demos to Run
-If you don't want to run something, comment it out.  For `TwitterDemoClient`, you'll need to pass in a `Consumer Key` and a `Consumer Secret`.  If you don't have one, go to https://dev.twitter.com/apps and create a new application.
-
-Build and Run the Application 
----------------------
+## 2.2 Building and Running from Source 
  
-To run, you can do `mvn exec:java`, or execute main class `com.redhat.middleware.jdg.Main`
+	mvn clean package
+	mvn exec:java -Djdg.demo.initialList=192.168.1.115:11223 -Djdg.demo.cacheName=labCache -Djdg.demo.maxEntries=1000 -Djdg.demo.clearOnFinish=false -Djdg.demo.putDelay=5 -Djdg.demo.useTwitter=false
 
-Debug the Application
-------------------------------------
+* **-Djdg.demo.initialList** must be set to at least one data grid node's hotrod interface. See HotRod Client documentation equivalent of: <http://docs.jboss.org/infinispan/5.1/apidocs/org/infinispan/client/hotrod/RemoteCacheManager.html#RemoteCacheManager(java.lang.String,%20boolean)/>
+* **-Djdg.demo.cacheName** must be set to the name of the cache to load the data into. All nodes in the cluster must have this cache.
+* **-Djdg.demo.maxEntries** is the count of data entries to load
+* **-Djdg.demo.clearOnFinish** is set to `true` or `false` to evict all the cached entries one by one after all the data has been loaded.
+* **-Djdg.demo.putDelay** is the amount of time in milliseconds to wait between puts to the cache.
+* **-Djdg.demo.useTwitter**:`false` to use the basic CounterDemo. `true` to load the grid with Twitter entries. **-Djdg.demo.consumerKey** and **-Djdg.demo.consumerSecret** must be set to your twitter api credentials. If you don't have credentials, go to <https://dev.twitter.com/apps and create a new application/>.
+
+# 3 Debugging
 
 If you want to debug the source code or look at the Javadocs of any library in the project, run either of the following commands to pull them into your local repository. The IDE should then detect them.
 
-        mvn dependency:sources
-        mvn dependency:resolve -Dclassifier=javadoc
+	mvn dependency:sources
+	mvn dependency:resolve -Dclassifier=javadoc
 
