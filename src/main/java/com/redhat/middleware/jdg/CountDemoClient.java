@@ -23,6 +23,8 @@
 
 package com.redhat.middleware.jdg;
 
+import java.util.logging.Logger;
+
 import org.infinispan.api.BasicCache;
 import org.infinispan.api.BasicCacheContainer;
 
@@ -34,7 +36,8 @@ import org.infinispan.api.BasicCacheContainer;
  *
  */
 public class CountDemoClient extends DelayableDemoClient<Integer, Object> {
-	
+	private static final Logger logger = Logger.getLogger(Main.class.getName());
+
 	private static final int DEFAULT_MAX_ENTRIES = 1000;
 	private static final String DEFAULT_PAYLOAD = "Some data";
 	
@@ -59,7 +62,8 @@ public class CountDemoClient extends DelayableDemoClient<Integer, Object> {
 	@Override
 	public void runSync() {
 		for (int i = 0; i < maxEntries; i++) {
-			getCache().put(i, payload);
+			logger.info("Putting object #" + i + " into cache: " + payload);
+			getCache().put(i, payload);			
 			delay();
 		}
 	}
@@ -72,7 +76,7 @@ public class CountDemoClient extends DelayableDemoClient<Integer, Object> {
 		}
 		for (int i = 0; i < maxEntries; i++) {
 			if (getCache().containsKey(i)) {
-				System.out.println("Found i = " + i + ".  This is bad!");
+				logger.info("Found i = " + i + ".  This is bad!");
 			}
 		}
 	}

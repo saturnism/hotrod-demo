@@ -104,16 +104,13 @@ public class TwitterDemoClient extends DelayableDemoClient<Long, Status> {
 		AccessToken accessToken = null;
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		while (null == accessToken) {
-			System.out
-					.println("Open the following URL and grant access to your account:");
-			System.out.println(requestToken.getAuthorizationURL());
-			System.out
-					.print("Enter the PIN(if aviailable) or just hit enter.[PIN]:");
+			logger.info("Open the following URL and grant access to your account:");
+			logger.info(requestToken.getAuthorizationURL());
+			logger.info("Enter the PIN(if aviailable) or just hit enter.[PIN]:");
 			String pin = br.readLine();
 			try {
 				if (pin.length() > 0) {
-					accessToken = twitter
-							.getOAuthAccessToken(requestToken, pin);
+					accessToken = twitter.getOAuthAccessToken(requestToken, pin);
 				} else {
 					accessToken = twitter.getOAuthAccessToken();
 				}
@@ -122,7 +119,7 @@ public class TwitterDemoClient extends DelayableDemoClient<Long, Status> {
 				this.accessTokenSecret = accessToken.getTokenSecret();
 			} catch (TwitterException te) {
 				if (401 == te.getStatusCode()) {
-					System.out.println("Unable to get the access token.");
+					logger.info("Unable to get the access token.");
 				} else {
 					te.printStackTrace();
 				}
@@ -177,6 +174,7 @@ public class TwitterDemoClient extends DelayableDemoClient<Long, Status> {
 				clear();
 				return;
 			}
+			logger.info("Putting status '" + status.getId() + "' in cache '" + getCache().getName() + "' -> " + status);
 			getCache().put(status.getId(), status);
 		}
 
