@@ -40,7 +40,7 @@ The Visualizer application can be found: <https://github.com/infinispan/visual/>
 ## 1.2 Running the Pre-built Demo
 Assuming the project has already been build there should be a JAR that has the dependencies included in it.  Execute main class `com.redhat.middleware.jdg.Main`.  Modify the properties for your environment and preferences for loading the grid with data.
 
-	java -cp ./Middleware/JDG/hotrod-demo-0.0.1-SNAPSHOT-jar-with-dependencies.jar -Djdg.demo.initialList=localhost:11223 -Djdg.demo.cacheName=labCache -Djdg.demo.maxEntries=100 -Djdg.demo.clearOnFinish=false -Djdg.demo.putDelay=0 -Djdg.demo.useTwitter=false com.redhat.middleware.jdg.Main
+	java -cp hotrod-demo-0.0.1-SNAPSHOT-jar-with-dependencies.jar -Djdg.demo.initialList=localhost:11223 -Djdg.demo.cacheName=labCache -Djdg.demo.maxEntries=100 -Djdg.demo.clearOnFinish=false -Djdg.demo.putDelay=0 -Djdg.demo.useTwitter=false com.redhat.middleware.jdg.Main
 
 * **-Djdg.demo.initialList** must be set to at least one data grid node's hotrod interface. See HotRod Client documentation equivalent of: <http://docs.jboss.org/infinispan/5.1/apidocs/org/infinispan/client/hotrod/RemoteCacheManager.html#RemoteCacheManager(java.lang.String,%20boolean)/>
 * **-Djdg.demo.cacheName** must be set to the name of the cache to load the data into. All nodes in the cluster must have this cache.
