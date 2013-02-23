@@ -23,43 +23,61 @@
 
 package com.redhat.middleware.jdg;
 
+import java.util.logging.Logger;
+
 import org.infinispan.client.hotrod.RemoteCacheManager;
+import org.jboss.logging.Logger.Level;
 
 /**
- * Main class.  Configure accordingly!  Pay attention to
- * <code>INITIAL_LIST</code> and <code>CACHE_NAME</code>
+ * Main demo launcher
+ * 
  * @author <a href="mailto:rtsang@redhat.com">Ray Tsang</a>
- *
  */
 public class Main {
-	/**
-	 * Initial hotrod server list
-	 */
-	private static final String INITIAL_LIST = "127.0.0.1";
-	
-	/**
-	 * Name of the cache to use for demo
-	 */
-	private static final String CACHE_NAME = "___defaultcache";
+	private static final Logger logger = Logger.getLogger(Main.class.getName());
 
 	/**
-	 * @param args
+	 * Default initial list of JDG servers to connect to to for the demo.
+	 * Format port is colon delimited and address:port pairs are semicolon delimited
+	 * 	"<server1>:<port1>;<server2>:<port2>"
 	 */
+	private static final String INITIAL_LIST = "127.0.0.1:11223";
+	
+	/**
+	 * Default name of the cache to use for demo
+	 */
+	private static final String CACHE_NAME = "labCache";
+
+	
 	public static void main(String[] args) {
-		RemoteCacheManager cm = new RemoteCacheManager(INITIAL_LIST);
+		final String initialList = System.getProperty("jdg.demo.initialList", INITIAL_LIST);
+		final String cacheName = System.getProperty("jdg.demo.cacheName", CACHE_NAME);
+		final int maxEntries = Integer.parseInt(System.getProperty("jdg.demo.maxEntries", "1000"));
+		final boolean clearOnFinish = Boolean.parseBoolean(System.getProperty("jdg.demo.clearOnFinish", "true"));
+		final int putDelay = Integer.parseInt(System.getProperty("jdg.demo.putDelay", "50"));
+		final boolean useTwitter = Boolean.parseBoolean(System.getProperty("jdg.demo.useTwitter", "false"));
+		final String consumerKey = System.getProperty("jdg.demo.consumerKey");
+		final String consumerSecret = System.getProperty("jdg.demo.consumerSecret");
 		
-		CountDemoClient countDemo = new CountDemoClient(cm, CACHE_NAME);
-		// optional parameters
-		// countDemo.setMaxEntries(1000);
-		// countDemo.setPayload("some example payload, it can be serializable object");
-		countDemo.startSync();
+		RemoteCacheManager cm = new RemoteCacheManager(initialList);
 		
-		// TODO: replace CONSUMER KEY and CONSUMER SECRET!!
-		TwitterDemoClient twitterDemo = new TwitterDemoClient(cm, CACHE_NAME, "CONSUMER KEY", "CONSUMER SECRET");
-		// optional parameters
-		// twitterDemo.setMaxEntries(1000);
-		
-		twitterDemo.startAsync();
-		
+		if(useTwitter) {
+			logger.info("Loading "+ maxEntries +" tweets into cache '" + cacheName + "' in JDG grid connected to: " + initialList);
+			
+			TwitterDemoClient twitterDemo = new TwitterDemoClient( cm, cacheName, consumerKey, consumerSecret);
+			twitterDemo.setMaxEntries(maxEntries);	
+			twitterDemo.setClearOnFinish(clearOnFinish);
+			twitterDemo.setDelayMs(putDelay);
+			twitterDemo.startAsync();			
+		} else {
+			logger.info("Loading "+ maxEntries +" objects into cache '" + cacheName + "' in JDG grid connected to: " + initialList);
+			
+			CountDemoClient countDemo = new CountDemoClient(cm, cacheName);
+			countDemo.setMaxEntries(maxEntries);
+			countDemo.setPayload("some example payload, it can be serializable object");
+			countDemo.setClearOnFinish(clearOnFinish);
+			countDemo.setDelayMs(putDelay);
+			countDemo.startSync();
+		}		
 	}
 }

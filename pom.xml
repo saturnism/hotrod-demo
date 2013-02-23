@@ -11,10 +11,7 @@
 	should have received a copy of the GNU Lesser General Public License along 
 	with this software; if not, write to the Free Software Foundation, Inc., 
 	51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA, or see the FSF site: 
-	http://www.fsf.org.
-	
-	@author <a href="mailto:rtsang@redhat.com">Ray Tsang</a>
--->
+	http://www.fsf.org. @author <a href="mailto:rtsang@redhat.com">Ray Tsang</a> -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -24,11 +21,13 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
 		<main.class>com.redhat.middleware.jdg.Main</main.class>
-		<!-- This is the JDG version, please make sure JDG repository is setup (see README.md) -->
-        <infinispan.version>5.1.5.FINAL</infinispan.version>
-        <!-- For JDG version, add -redhat-1
-        	<infinispan.version>5.1.5.FINAL-redhat-1</infinispan.version>
-        -->
+
+		<!-- This is the JDG version, please make sure JDG repository is setup 
+			(see README.md) <infinispan.version>5.1.5.FINAL</infinispan.version> -->
+
+		<!-- For JDG version, add -redhat-1 -->
+		<infinispan.version>5.1.5.FINAL-redhat-1</infinispan.version>
+
 	</properties>
 	<dependencies>
 		<dependency>
@@ -74,6 +73,27 @@
 				<configuration>
 					<mainClass>${main.class}</mainClass>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifest>
+							<mainClass>fully.qualified.MainClass</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
