@@ -18,7 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.redhat.middleware.jdg</groupId>
 	<artifactId>hotrod-demo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<properties>
 		<main.class>com.redhat.middleware.jdg.Main</main.class>
 
