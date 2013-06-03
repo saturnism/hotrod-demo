@@ -23,8 +23,10 @@
 
 package com.redhat.middleware.jdg;
 
+import java.util.Set;
 import java.util.logging.Logger;
 
+import org.infinispan.api.BasicCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.jboss.logging.Logger.Level;
 
@@ -41,7 +43,7 @@ public class Main {
 	 * Format port is colon delimited and address:port pairs are semicolon delimited
 	 * 	"<server1>:<port1>;<server2>:<port2>"
 	 */
-	private static final String INITIAL_LIST = "127.0.0.1:11223";
+	private static final String DEFAULT_INITIAL_LIST = "127.0.0.1:11222";
 	
 	/**
 	 * Default name of the cache to use for demo
@@ -50,7 +52,7 @@ public class Main {
 
 	
 	public static void main(String[] args) {
-		final String initialList = System.getProperty("jdg.demo.initialList", INITIAL_LIST);
+		final String initialList = System.getProperty("jdg.demo.initialList", DEFAULT_INITIAL_LIST);
 		final String cacheName = System.getProperty("jdg.demo.cacheName", CACHE_NAME);
 		final int maxEntries = Integer.parseInt(System.getProperty("jdg.demo.maxEntries", "1000"));
 		final boolean clearOnFinish = Boolean.parseBoolean(System.getProperty("jdg.demo.clearOnFinish", "true"));
@@ -78,6 +80,14 @@ public class Main {
 			countDemo.setClearOnFinish(clearOnFinish);
 			countDemo.setDelayMs(putDelay);
 			countDemo.startSync();
+			
+			System.out.println("Keys in cache!");
+			BasicCache<Object, Object> cache = cm.getCache(cacheName);
+			Set<Object> keys = cache.keySet();
+			for (Object key : keys) {
+			   System.out.println(key);
+			}
+			
 		}		
 	}
 }

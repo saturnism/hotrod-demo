@@ -26,7 +26,7 @@
 			(see README.md) <infinispan.version>5.1.5.FINAL</infinispan.version> -->
 
 		<!-- For JDG version, add -redhat-1 -->
-		<infinispan.version>5.1.5.FINAL-redhat-1</infinispan.version>
+		<infinispan.version>5.2.0.CR2-redhat-1</infinispan.version>
 
 	</properties>
 	<dependencies>
@@ -82,7 +82,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>fully.qualified.MainClass</mainClass>
+							<mainClass>com.redhat.middleware.jdg.Main</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
